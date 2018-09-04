@@ -19,6 +19,7 @@ class App extends Component {
     this.loginFace=this.loginFace.bind(this);
     this.loginGoogle=this.loginGoogle.bind(this);
     this.loginTwitter=this.loginTwitter.bind(this);
+    this.loginGitHub=this.loginGitHub.bind(this);
 
   }
   Signup()
@@ -70,11 +71,12 @@ class App extends Component {
   loginFace()
   {
     var provider = new firebase.auth.FacebookAuthProvider();
+    var self=this;
     firebase.auth().signInWithPopup(provider).then(function(result) {
       console.log(result)
       var token = result.credential.accessToken;
       var user = result.user;
-      this.setState({message:"login successful"});
+      self.setState({message:"login successful"});
      }).catch(function(error) {
   
        var errorCode = error.code;
@@ -91,12 +93,13 @@ class App extends Component {
   loginGoogle()
   {
     var provider = new firebase.auth.GoogleAuthProvider();
+    var self=this;
     firebase.auth().signInWithPopup(provider).then(function(result) {
       var token = result.credential.accessToken;
       var user = result.user;
       console.log(token)
       console.log(user)
-      this.setState({message: "login Successful"})
+      self.setState({message: "login Successful"})
     }).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -107,17 +110,38 @@ class App extends Component {
   }
   loginTwitter()
   {
+    var self=this;
     var provider = new firebase.auth.TwitterAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {
       var token = result.credential.accessToken;
       var user = result.user;
      console.log(token)
       console.log(user)
-      this.setState({message: "login Successful"})
+      self.setState({message: "login Successful"})
    }).catch(function(error) {
       console.log(error.code)
       console.log(error.message)
    });
+  }
+  loginGitHub()
+  {
+    var provider = new firebase.auth.GithubAuthProvider();
+    firebase.auth().signInWithPopup(provider)
+    .then(function(result) {
+      var token = result.credential.accessToken;
+      var user = result.user;
+    
+      console.log(token)
+      console.log(user)
+      this.setState({message: "login successful"});
+   }).catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+    
+      console.log(error.code)
+      console.log(error.message)
+   });
+
   }
 
   render() {
@@ -129,13 +153,15 @@ class App extends Component {
       {this.state.error}
       <label>Password</label>
       <input value={this.state.password} type="password" onChange={ event => this.setState({password: event.target.value})}/>
-      {this.state.error1}
-      <button onClick={this.Signup}> Signin With Email And Password</button>
+      {this.state.error1}<br/>
+
+      <button onClick={this.Signup}> Signin With Email And Password</button><br/>
       <button onClick={this.Login}>Login with Email And Password</button><br/>
       {this.state.message}
       <button onClick={this.loginFace}>Login with Facebook</button><br/>
       <button onClick={this.loginGoogle}>Login With Google</button><br/>
       <button onClick={this.loginTwitter}>Login with Twitter</button><br/>
+      <button onClick={this.loginGitHub}>Login with GitHub</button><br/>
       </div>
     );
   }
