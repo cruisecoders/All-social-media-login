@@ -26,8 +26,9 @@ class App extends Component {
   {
     if(this.state.email!="" && this.state.password!="")
     {
+      var self=this
       firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
-        this.setState({message: "Signup successful"})
+        self.setState({message: "Signup successful"})
       }).catch(function(error) {
       this.setState({error: "Server does not support"})
       });
@@ -49,8 +50,9 @@ class App extends Component {
   {
     if(this.state.email!="" && this.state.password!="")
     {
+      var self=this;
       firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
-       this.setState({message: "login successful"}) 
+       self.setState({message: "login successful"}) 
       }).catch(function(error) {
     this.setState({error: "Server does not support"})
    });
@@ -126,6 +128,7 @@ class App extends Component {
   loginGitHub()
   {
     var provider = new firebase.auth.GithubAuthProvider();
+    var self=this;
     firebase.auth().signInWithPopup(provider)
     .then(function(result) {
       var token = result.credential.accessToken;
@@ -133,7 +136,7 @@ class App extends Component {
     
       console.log(token)
       console.log(user)
-      this.setState({message: "login successful"});
+      self.setState({message: "login successful"});
    }).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -157,7 +160,7 @@ class App extends Component {
 
       <button onClick={this.Signup}> Signin With Email And Password</button><br/>
       <button onClick={this.Login}>Login with Email And Password</button><br/>
-      {this.state.message}
+      <h2>{this.state.message}</h2>
       <button onClick={this.loginFace}>Login with Facebook</button><br/>
       <button onClick={this.loginGoogle}>Login With Google</button><br/>
       <button onClick={this.loginTwitter}>Login with Twitter</button><br/>
